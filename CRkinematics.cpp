@@ -101,10 +101,36 @@ MatrixXd CRkinematics::fw_LSK(MatrixXd wire_length){
 
 MatrixXd CRkinematics::pose_CR(MatrixXd theta,MatrixXd phi){
     //pose
-    Matrix4d Rx1;
-    Rx1 = Rx(0.2);
-    std::cout << Rx1 << std::endl;
-    return Rx1;
+    MatrixXd xyz(4,1);
+    MatrixXd pose;
+    MatrixXd L_;
+    L_ = L/10;
+    MatrixXd simat;
+    MatrixXd simat_;
+
+
+    for(i=0;i<section;i++){
+        simat = Rx(phi(0,i))*Tz(L_(0,i))*Ry(theta(0,1))*Tz(L_(0,1));
+        if(i==0){
+            simat_ = simat^5;
+            pose.conservativeResize(4,3*(i+1))
+            pose.block(0,0,4,1) = xyz;
+            pose.block(0,3*(i+1)-2,4,1) =  simat * xyz;           
+            pose.block(0,3*(i+1)-1,4,1) =  simat^3 * xyz; 
+            pose.block(0,3*(i+1),4,1) =  simat^5 * xyz; 
+        }
+      else{
+        pose.conservativeResize(4,3*(i+1))
+        pose.block(0,3*(i+1)-2,4,1) =  simat_ *simat xyz;           
+        pose.block(0,3*(i+1)-1,4,1) =  simat_ *simat^3 xyz; 
+        pose.block(0,3*(i+1),4,1) =  simat_ *simat^5 xyz;
+        simat_ = simat_ * simat^5; 
+
+        }
+    }
+
+    std::cout << pose << std::endl;
+    return pose;
 
 } 
 
