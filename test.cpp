@@ -12,9 +12,10 @@ using namespace Eigen;
 
 
 int main(){
+    MatrixXd out;
     CRkinematics test;
     test.dataset(9);
-    test.theta << 90, -90 , 90, 0, 0, 0, 0, 0, 90;
+    test.theta << 90, -90 , 90, 0, 0, 0, 0, 0, 0;
     test.phi << 0, 0, 0, 0, 0, 0, 0, 0, 0;
 
     std::cout << test.theta << std::endl;
@@ -32,5 +33,15 @@ int main(){
     std::cout << test.beta<< std::endl;
 
     std::cout << "--------------" << std::endl;
-    test.pose_CR(test.theta,test.phi); 
+
+    out = test.pose_CR(test.theta,test.phi); 
+
+    std::cout << out.block(0,0,3,4) << std::endl;
+
+
+    std::cout << "--------------" << std::endl;
+
+    out = test.pose_CR2d(test.theta); 
+
+    std::cout << out.block(0,0,3,4) << std::endl;
 }

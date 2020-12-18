@@ -142,9 +142,44 @@ MatrixXd CRkinematics::pose_CR(MatrixXd theta_,MatrixXd phi_){
 } 
 
 
-MatrixXd CRkinematics::pose_CR2d(MatrixXd theta){
-    MatrixXd a;
-    return a;
+MatrixXd CRkinematics::pose_CR2d(MatrixXd theta_){
+    //pose 2d
+    MatrixXd xy(3,1);
+    xy << 0,
+        0,
+        1;
+
+    MatrixXd L_;
+    L_ = L/10;
+    MatrixXd simat;
+    MatrixXd simat_;
+    theta_ = theta_ /N *M_PI/180;
+
+
+    for(int i=0;i<section;i++){  
+
+        simat = T2d(L_(0,i))*R2d(theta_(0,i))*T2d(L_(0,i));
+ 
+        if(i==0){
+            simat_ = nmulti(simat,5);
+            pose.conservativeResize(3,3*(i+1)+1);
+            pose.block(0,0,3,1) = xy;
+            pose.block(0,3*(i+1)-2,3,1) =  simat * xy;           
+            pose.block(0,3*(i+1)-1,3,1) =  nmulti(simat,3) * xy; 
+            pose.block(0,3*(i+1),3,1) =  nmulti(simat,5) * xy; 
+
+        }
+        else{
+        pose.conservativeResize(3,3*(i+1)+1);
+        pose.block(0,3*(i+1)-2,3,1) =  simat_ *simat *xy;           
+        pose.block(0,3*(i+1)-1,3,1) =  simat_ *nmulti(simat,3) *xy; 
+        pose.block(0,3*(i+1),3,1) =  simat_ *nmulti(simat,5) *xy;
+        simat_ = simat_ * nmulti(simat,5); 
+
+        }
+    }
+
+    return pose;
 } 
 
 
@@ -216,6 +251,33 @@ Matrix4d CRkinematics::Tz(double h){
 
     return T;    
 }
+
+
+Matrix3d CRkinematics::T2d(double h){
+    Matrix3d T;
+
+    T << 1,0,h,
+        0,1,0,
+        0,0,1;
+
+
+    return T;    
+}
+
+
+Matrix3d CRkinematics::R2d(double a){
+    Matrix3d R;
+
+    R << std::cos(a),-1*std::sin(a),0,
+        std::sin(a),std::cos(a),0,
+        0,0,1;
+
+
+    return R;    
+}
+
+
+
 
 MatrixXd CRkinematics::nmulti(MatrixXd A,int n){
     MatrixXd out;

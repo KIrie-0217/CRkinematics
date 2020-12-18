@@ -15,8 +15,8 @@ class CRkinematics{
         Eigen::MatrixXd SVD_solve(Eigen::MatrixXd A, Eigen::MatrixXd w);
         Eigen::MatrixXd inv_LSK(Eigen::MatrixXd theta,Eigen::MatrixXd phi);
         Eigen::MatrixXd fw_LSK(Eigen::MatrixXd wire_length);
-        Eigen::MatrixXd pose_CR(Eigen::MatrixXd theta,Eigen::MatrixXd phi);
-        Eigen::MatrixXd pose_CR2d(Eigen::MatrixXd theta);
+        Eigen::MatrixXd pose_CR(Eigen::MatrixXd theta_,Eigen::MatrixXd phi_);
+        Eigen::MatrixXd pose_CR2d(Eigen::MatrixXd theta_);
 
 
         Eigen::MatrixXd beta; //2*9
@@ -43,6 +43,9 @@ class CRkinematics{
         Eigen::Matrix4d Tx(double h); //tx
         Eigen::Matrix4d Ty(double h); //tx
         Eigen::Matrix4d Tz(double h); //tx
+
+        Eigen::Matrix3d T2d(double h); //tx
+        Eigen::Matrix3d R2d(double a); //tx
 
         Eigen::MatrixXd nmulti(Eigen::MatrixXd A,int n); //行列のn乗計算　A^n
 };
