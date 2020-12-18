@@ -43,6 +43,8 @@ class CRkinematics{
         Eigen::Matrix4d Tx(double h); //tx
         Eigen::Matrix4d Ty(double h); //tx
         Eigen::Matrix4d Tz(double h); //tx
+
+        Eigen::MatrixXd nmulti(Eigen::MatrixXd A,int n); //行列のn乗計算　A^n
 };
 #endif
 
