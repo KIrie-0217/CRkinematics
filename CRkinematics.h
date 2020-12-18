@@ -27,6 +27,8 @@ class CRkinematics{
 
         Eigen::MatrixXd theta; //曲げ角θ 1*9
         Eigen::MatrixXd phi; //曲げ角φ 1*9
+
+        Eigen::MatrixXd pose;
         int section;
 
     private:

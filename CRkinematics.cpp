@@ -102,7 +102,6 @@ MatrixXd CRkinematics::fw_LSK(MatrixXd wire_length){
 MatrixXd CRkinematics::pose_CR(MatrixXd theta,MatrixXd phi){
     //pose
     MatrixXd xyz(4,1);
-    MatrixXd pose;
     MatrixXd L_;
     L_ = L/10;
     MatrixXd simat;
